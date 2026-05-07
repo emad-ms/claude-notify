@@ -1,0 +1,78 @@
+# claude-notify
+
+A tiny Claude Code plugin that plays a sound when Claude is doing something you might want to know about. Three events, two distinct sounds:
+
+| Event | Sound (macOS) | When |
+| --- | --- | --- |
+| `Stop` | Glass | Claude finishes responding |
+| `Notification` | Glass | Claude is awaiting input / sends a notification |
+| `PermissionRequest` | Funk | Claude is **about to ask** for permission to run a tool |
+
+Works on macOS, Linux, and Windows.
+
+## Install
+
+In any Claude Code session:
+
+```
+/plugin marketplace add emad-ms/claude-notify
+/plugin install notify@claude-notify
+```
+
+That's it. New sessions will play the sounds.
+
+> If you already have `Stop` / `Notification` / `PermissionRequest` hooks in your own `~/.claude/settings.json`, both will fire (you'll hear the sound twice). Remove your local entries to dedupe — see [Removing legacy local hooks](#removing-legacy-local-hooks) below.
+
+## Update
+
+```
+/plugin update notify@claude-notify
+```
+
+## Disable / Uninstall
+
+```
+/plugin disable notify@claude-notify     # keep installed but silent
+/plugin uninstall notify@claude-notify   # remove entirely
+```
+
+## Customize the sounds
+
+The plugin lives at `~/.claude/plugins/cache/claude-notify/plugins/notify/scripts/`. Edit:
+
+- `notify.sh` (macOS/Linux) — change `Glass.aiff` to any other file under `/System/Library/Sounds/` (macOS) or any sound file path on Linux.
+- `permission.sh` (macOS/Linux) — change `Funk.aiff` similarly.
+- `notify.ps1` / `permission.ps1` (Windows) — swap `Asterisk` / `Exclamation` for any [`SystemSounds`](https://learn.microsoft.com/en-us/dotnet/api/system.media.systemsounds) member: `Beep`, `Hand`, `Question`.
+
+macOS sounds available: Glass, Funk, Hero, Ping, Pop, Tink, Sosumi, Submarine, Bottle, Frog, Blow, Morse, Purr, Basso.
+
+> Edits to the cache directory are overwritten on `/plugin update`. For permanent changes, fork this repo and point `/plugin marketplace add` at your fork.
+
+## Cross-platform notes
+
+- **macOS** — uses `afplay` with built-in system sounds. No setup.
+- **Linux** — tries `paplay` (PulseAudio), then `aplay` (ALSA), then `canberra-gtk-play`, then `play` (sox). Falls back to terminal bell (`\a`) if none are present. On most desktop distros, at least one is preinstalled.
+- **Windows** — uses PowerShell `[System.Media.SystemSounds]`. Works in native PowerShell, and in WSL if you've got pwsh installed; otherwise the bash script will run via WSL bash and fall back to the terminal bell.
+
+## Removing legacy local hooks
+
+If you previously wired up Stop/Notification/PermissionRequest hooks directly in `~/.claude/settings.json`, remove those entries so you don't hear duplicate sounds. The relevant block looks like:
+
+```json
+"hooks": {
+  "Stop":              [ { "hooks": [ { "type": "command", "command": "bash /Users/.../notify.sh" } ] } ],
+  "Notification":      [ { "hooks": [ { "type": "command", "command": "bash /Users/.../notify.sh" } ] } ],
+  "PermissionRequest": [ { "hooks": [ { "type": "command", "command": "bash /Users/.../permission.sh" } ] } ]
+}
+```
+
+Delete those three keys and the local `notify.sh` / `permission.sh` files in `~/.claude/`. The plugin is now the single source of truth.
+
+## How it works under the hood
+
+This repo is a single-plugin Claude Code marketplace.
+
+- `.claude-plugin/marketplace.json` — marketplace manifest, lists the one plugin.
+- `plugins/notify/.claude-plugin/plugin.json` — plugin manifest.
+- `plugins/notify/hooks/hooks.json` — declares hooks for `Stop`, `Notification`, and `PermissionRequest`. Each event has both a `bash` and a `powershell` command; whichever shell runs on your platform plays the right sound. Hooks are registered as `async: true` so they never block Claude Code.
+- `plugins/notify/scripts/` — the actual sound-playing scripts.

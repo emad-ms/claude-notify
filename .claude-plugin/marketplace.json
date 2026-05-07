@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "claude-notify",
+  "owner": {
+    "name": "Emad",
+    "email": "emad@makersights.com",
+    "url": "https://github.com/emad-ms"
+  },
+  "plugins": [
+    {
+      "name": "notify",
+      "source": "./plugins/notify",
+      "description": "Audible notifications when Claude Code finishes responding or asks for permission. Distinct sounds per event so you can tell them apart from the next room.",
+      "version": "0.1.0"
+    }
+  ]
+}
