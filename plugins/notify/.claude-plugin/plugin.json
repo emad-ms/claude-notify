@@ -1,7 +1,7 @@
 {
   "name": "notify",
-  "version": "0.1.0",
-  "description": "Plays a sound when Claude Code finishes (Stop), is awaiting input (Notification), or is about to ask for permission (PermissionRequest). Cross-platform — macOS, Linux, Windows.",
+  "version": "0.1.1",
+  "description": "Plays a sound when Claude Code finishes (Stop), is awaiting input (Notification), or is about to ask for permission (PermissionRequest). Works on macOS, Linux, WSL, and Windows with Git Bash.",
   "author": {
     "name": "Emad",
     "email": "emad@makersights.com"

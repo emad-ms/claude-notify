@@ -8,12 +8,6 @@
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/notify.sh\"",
             "shell": "bash",
             "async": true
-          },
-          {
-            "type": "command",
-            "command": "& \"${CLAUDE_PLUGIN_ROOT}/scripts/notify.ps1\"",
-            "shell": "powershell",
-            "async": true
           }
         ]
       }
@@ -26,12 +20,6 @@
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/notify.sh\"",
             "shell": "bash",
             "async": true
-          },
-          {
-            "type": "command",
-            "command": "& \"${CLAUDE_PLUGIN_ROOT}/scripts/notify.ps1\"",
-            "shell": "powershell",
-            "async": true
           }
         ]
       }
@@ -43,12 +31,6 @@
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/permission.sh\"",
             "shell": "bash",
-            "async": true
-          },
-          {
-            "type": "command",
-            "command": "& \"${CLAUDE_PLUGIN_ROOT}/scripts/permission.ps1\"",
-            "shell": "powershell",
             "async": true
           }
         ]

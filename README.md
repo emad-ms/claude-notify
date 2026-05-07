@@ -8,7 +8,7 @@ A tiny Claude Code plugin that plays a sound when Claude is doing something you 
 | `Notification` | Glass | Claude is awaiting input / sends a notification |
 | `PermissionRequest` | Funk | Claude is **about to ask** for permission to run a tool |
 
-Works on macOS, Linux, and Windows.
+Works on **macOS**, **Linux**, **WSL**, and **Windows with Git Bash** (almost every dev setup). See [Windows native](#windows-native) below if you don't have any of those.
 
 ## Install
 
@@ -55,9 +55,8 @@ This requires GitHub's SSH host key to be in your `~/.ssh/known_hosts`. If you'v
 
 The plugin lives at `~/.claude/plugins/cache/claude-notify/plugins/notify/scripts/`. Edit:
 
-- `notify.sh` (macOS/Linux) — change `Glass.aiff` to any other file under `/System/Library/Sounds/` (macOS) or any sound file path on Linux.
-- `permission.sh` (macOS/Linux) — change `Funk.aiff` similarly.
-- `notify.ps1` / `permission.ps1` (Windows) — swap `Asterisk` / `Exclamation` for any [`SystemSounds`](https://learn.microsoft.com/en-us/dotnet/api/system.media.systemsounds) member: `Beep`, `Hand`, `Question`.
+- `notify.sh` — change `Glass.aiff` to any other file under `/System/Library/Sounds/` (macOS) or any sound file path on Linux.
+- `permission.sh` — change `Funk.aiff` similarly.
 
 macOS sounds available: Glass, Funk, Hero, Ping, Pop, Tink, Sosumi, Submarine, Bottle, Frog, Blow, Morse, Purr, Basso.
 
@@ -66,8 +65,14 @@ macOS sounds available: Glass, Funk, Hero, Ping, Pop, Tink, Sosumi, Submarine, B
 ## Cross-platform notes
 
 - **macOS** — uses `afplay` with built-in system sounds. No setup.
-- **Linux** — tries `paplay` (PulseAudio), then `aplay` (ALSA), then `canberra-gtk-play`, then `play` (sox). Falls back to terminal bell (`\a`) if none are present. On most desktop distros, at least one is preinstalled.
-- **Windows** — uses PowerShell `[System.Media.SystemSounds]`. Works in native PowerShell, and in WSL if you've got pwsh installed; otherwise the bash script will run via WSL bash and fall back to the terminal bell.
+- **Linux / WSL** — tries `paplay` (PulseAudio), then `aplay` (ALSA), then `canberra-gtk-play`, then `play` (sox). Falls back to terminal bell (`\a`) if none are present. On most desktop distros, at least one is preinstalled.
+- **Windows with Git Bash** — runs the bash script through Git Bash and falls back to terminal bell. Most devs already have Git Bash installed alongside `git`.
+
+### Windows native
+
+The plugin's hooks run through bash. If you don't have **WSL** or **Git Bash** installed, install one of them — Git Bash is the easier path (it ships with [Git for Windows](https://git-scm.com/download/win)). After installing, restart Claude Code and the plugin will start playing sounds.
+
+> Why bash-only? The previous version of the plugin shipped a PowerShell fallback, but Claude Code fails the hook at config-load if PowerShell isn't on PATH (instead of silently skipping). Bash through Git Bash / WSL is universal enough that this is the simpler, less buggy path.
 
 ## Removing legacy local hooks
 

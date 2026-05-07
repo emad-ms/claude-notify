@@ -11,7 +11,7 @@
       "name": "notify",
       "source": "./plugins/notify",
       "description": "Audible notifications when Claude Code finishes responding or asks for permission. Distinct sounds per event so you can tell them apart from the next room.",
-      "version": "0.1.0"
+      "version": "0.1.1"
     }
   ]
 }
