@@ -12,16 +12,31 @@ Works on macOS, Linux, and Windows.
 
 ## Install
 
-In any Claude Code session:
+Open a Claude Code session in your terminal. Type the **first** command and press Enter, wait for the success message, then type the **second** and press Enter:
 
 ```
-/plugin marketplace add emad-ms/claude-notify
+/plugin marketplace add https://github.com/emad-ms/claude-notify.git
+```
+
+```
 /plugin install notify@claude-notify
 ```
 
-That's it. New sessions will play the sounds.
+That's it. New Claude Code sessions will play the sounds. You don't need to install anything else, set up SSH keys, or know any git.
+
+> **Important:** run the two commands one at a time — don't paste both at once. The first one needs to finish before the second runs.
 
 > If you already have `Stop` / `Notification` / `PermissionRequest` hooks in your own `~/.claude/settings.json`, both will fire (you'll hear the sound twice). Remove your local entries to dedupe — see [Removing legacy local hooks](#removing-legacy-local-hooks) below.
+
+### Engineer shortcut (optional)
+
+If you have GitHub SSH set up and prefer the shorter form:
+
+```
+/plugin marketplace add emad-ms/claude-notify
+```
+
+This requires GitHub's SSH host key to be in your `~/.ssh/known_hosts`. If you've ever cloned a private GitHub repo over SSH on this machine, you're already set. If not, the HTTPS URL above is the safer pick.
 
 ## Update
 
